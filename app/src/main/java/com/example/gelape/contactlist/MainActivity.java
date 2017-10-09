@@ -75,7 +75,7 @@ public class MainActivity extends AppCompatActivity
                     Cursor cursor = crud.loadData();
                     String[] contacts = new String[] {SqliteDB.ID, SqliteDB.KEY_NAME};
                     int[] idViews = new int[] {R.id.contactPicture, R.id.contactName};
-                    adapter = new ContactsAdapter(getBaseContext(), R.layout.contact_cell, );
+                    //adapter = new ContactsAdapter(getBaseContext(), R.layout.contact_cell, );
                     contactList.setAdapter(adapter);
                     //adapter = new ContactsAdapter(getApplicationContext(), R.layout.contact_cell, contactsResponseFinal);
                 }
