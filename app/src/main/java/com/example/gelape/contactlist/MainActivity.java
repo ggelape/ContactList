@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.ListView;
@@ -44,7 +45,15 @@ public class MainActivity extends AppCompatActivity
         controller = new DbController(getApplicationContext());
         controller.open();
         checkFirstAppRun();
+    }
 
+    @Override
+    public void onStart()
+    {
+        super.onStart();
+        contactsResponseFinal = controller.fetchAllContacts();
+        adapter = new ContactsAdapter(getApplicationContext(), R.layout.contact_cell, contactsResponseFinal);
+        contactList.setAdapter(adapter);
     }
 
     public void checkFirstAppRun()
@@ -98,11 +107,7 @@ public class MainActivity extends AppCompatActivity
     public void onItemClick(int position)
     {
         Intent intent = new Intent(getApplicationContext(), ContactInfoActivity.class);
-        intent.putExtra("contactName", contactsResponseFinal.get(position).getName());
-        intent.putExtra("contactBio", contactsResponseFinal.get(position).getBio());
-        intent.putExtra("contactBirth", contactsResponseFinal.get(position).getBorn());
-        intent.putExtra("contactEmail", contactsResponseFinal.get(position).getEmail());
-        intent.putExtra("contactPhoto", contactsResponseFinal.get(position).getPhoto());
+        intent.putExtra("contactId", contactsResponseFinal.get(position).getId());
         getApplicationContext().startActivity(intent);
     }
 

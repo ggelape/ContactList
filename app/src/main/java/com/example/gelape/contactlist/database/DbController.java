@@ -81,6 +81,30 @@ public class DbController
         return db.delete(TABLE_CONTACTS, ID + "=" + rowIndex, null) > 0;
     }
 
+    public Cursor fetchEntry(long rowIndex) throws SQLException
+    {
+        Cursor mCursor = db.query(true, TABLE_CONTACTS, TABLE_COLUMNS, ID + "=" + rowIndex, null, null, null, null, null);
+        if (mCursor != null)
+        {
+            mCursor.moveToFirst();
+        }
+        return mCursor;
+    }
+
+    public ContactResponse fetchSpecificContact(long rowIndex)
+    {
+        Cursor resultSet = fetchEntry(rowIndex);
+        ContactResponse contactResponse = new ContactResponse(
+                resultSet.getInt(resultSet.getColumnIndex(ID)),
+                resultSet.getString(resultSet.getColumnIndex(KEY_NAME)),
+                resultSet.getString(resultSet.getColumnIndex(KEY_BIO)),
+                resultSet.getString(resultSet.getColumnIndex(KEY_BORN)),
+                resultSet.getString(resultSet.getColumnIndex(KEY_EMAIL)),
+                resultSet.getString(resultSet.getColumnIndex(KEY_PHOTO)));
+        resultSet.close();
+        return contactResponse;
+    }
+
     public Cursor fetchAllEntries()
     {
         return db.query(TABLE_CONTACTS, TABLE_COLUMNS, null, null, null, null, null);
