@@ -11,6 +11,7 @@ import com.example.gelape.contactlist.R;
 import com.example.gelape.contactlist.model.ContactResponse;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -23,11 +24,11 @@ public class ContactsAdapter extends ArrayAdapter<ContactResponse>
     TextView contactName;
     @BindView(R.id.contactPicture)
     CircleImageView contactPicture;
-    List<ContactResponse> contacts;
+    ArrayList<ContactResponse> contacts;
     private int rowLayout;
     private Context context;
 
-    public ContactsAdapter(Context context, int rowLayout, List<ContactResponse> contacts)
+    public ContactsAdapter(Context context, int rowLayout, ArrayList<ContactResponse> contacts)
     {
         super(context,rowLayout,contacts);
         this.contacts = contacts;

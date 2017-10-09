@@ -1,6 +1,5 @@
 package com.example.gelape.contactlist;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
