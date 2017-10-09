@@ -11,7 +11,8 @@ public class SqliteDB extends SQLiteOpenHelper
 
     private static final String DATABASE_NAME = "contactlist";
 
-    static final String TABLE_CONTACTS = "contacts";
+    public static final String TABLE_CONTACTS = "contacts";
+
 
     public static final String KEY_NAME = "Name";
     public static final String KEY_BIO = "Bio";
@@ -19,6 +20,8 @@ public class SqliteDB extends SQLiteOpenHelper
     public static final String KEY_EMAIL = "Email";
     public static final String KEY_PHOTO = "Photo";
     public static final String ID = "_id";
+
+    public static final String[]    TABLE_COLUMNS   = { ID, KEY_NAME, KEY_BIO, KEY_BORN, KEY_EMAIL, KEY_PHOTO };
 
     public SqliteDB(Context context)
     {
@@ -30,12 +33,12 @@ public class SqliteDB extends SQLiteOpenHelper
     public void onCreate(SQLiteDatabase db)
     {
         String CREATE_CONTACTS_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_CONTACTS +"( " +
-                ID + " INTEGER PRIMARY KEY AUTOINCREMENT," +
+                ID + " INTEGER PRIMARY KEY," +
                 KEY_NAME + " TEXT NOT NULL, " +
                 KEY_BIO + " TEXT, " +
                 KEY_BORN + " TEXT, " +
-                KEY_EMAIL + " TEXT" +
-                KEY_PHOTO + " TEXT, " +
+                KEY_EMAIL + " TEXT," +
+                KEY_PHOTO + " TEXT " +
                 ");";
         db.execSQL(CREATE_CONTACTS_TABLE);
         Log.d(TABLE_CONTACTS, "created");
