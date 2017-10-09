@@ -2,23 +2,23 @@ package com.example.gelape.contactlist;
 
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.InputType;
-import android.util.Log;
-import android.view.LayoutInflater;
+import android.view.Gravity;
 import android.view.View;
-import android.widget.CalendarView;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.gelape.contactlist.database.DbController;
 import com.example.gelape.contactlist.model.ContactResponse;
@@ -53,7 +53,6 @@ public class ContactInfoActivity extends AppCompatActivity
     Calendar bornBox;
     Bundle bundle;
     DbController controller;
-    ArrayList<ContactResponse> contactsNew = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -86,7 +85,7 @@ public class ContactInfoActivity extends AppCompatActivity
     @OnClick(R.id.fab)
     public void onClick(View view)
     {
-        createDialog(view);
+        createDialogUpdate(view);
     }
 
     private void updateLabelFrom()
@@ -98,7 +97,7 @@ public class ContactInfoActivity extends AppCompatActivity
         bornEdt.setInputType(InputType.TYPE_NULL);
     }
 
-    public void createDialog(View view)
+    public void createDialogUpdate(View view)
     {
         bundle = getIntent().getExtras();
         LinearLayout layout = new LinearLayout(view.getContext());
@@ -148,25 +147,75 @@ public class ContactInfoActivity extends AppCompatActivity
         photoURL.setHint("URL da Foto");
         layout.addView(photoURL);
 
-        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
-        alert.setTitle("Alterar o contato")
-                .setView(layout).setPositiveButton("Salvar", new DialogInterface.OnClickListener()
-        {
-            public void onClick(DialogInterface dialog, int whichButton)
-            {
-                ContactResponse contact = new ContactResponse(bundle.getInt("contactId"),
-                        nameBox.getText().toString(),
-                        bioBox.getText().toString(),
-                        bornEdt.getText().toString(),
-                        emailBox.getText().toString(),
-                        photoURL.getText().toString());
+        TextView title = new TextView(this);
+        // You Can Customise your Title here
+        title.setText("Editar Contato");
+        title.setBackgroundColor(Color.parseColor("#64b5f6"));
+        title.setPadding(10, 10, 10, 10);
+        title.setGravity(Gravity.CENTER);
+        title.setTextColor(Color.BLACK);
+        title.setTextSize(22);
 
-                controller.updateRow(bundle.getInt("contactId"), contact);
-                updateContactInfo(bundle.getInt("contactId"));
-            }
-        })
+        final AlertDialog.Builder alert = new AlertDialog.Builder(this);
+        alert.setCustomTitle(title)
+                .setView(layout).setPositiveButton("Salvar", null)
                 .setNegativeButton("Cancelar", null);
-        alert.show();
+        //alert.show();
+
+        final AlertDialog alertDialog = alert.create();
+
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener()
+        {
+            @Override
+            public void onShow(final DialogInterface dialogInterface)
+            {
+                Button positiveButton = alertDialog.getButton(AlertDialog.BUTTON_POSITIVE);
+                positiveButton.setOnClickListener(new View.OnClickListener()
+                {
+                    public void onClick(View v)
+                    {
+                        if(nameBox.getText().toString().isEmpty() ||
+                                emailBox.getText().toString().isEmpty() ||
+                                bioBox.getText().toString().isEmpty() ||
+                                photoURL.getText().toString().isEmpty())
+                        {
+                            Toast.makeText(getApplicationContext(),
+                                    "Nenhum dos campos pode estar em branco, favor preencher!",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                        else
+                        {
+                            ContactResponse contact = new ContactResponse(bundle.getInt("contactId"),
+                                    nameBox.getText().toString(),
+                                    bioBox.getText().toString(),
+                                    bornEdt.getText().toString(),
+                                    emailBox.getText().toString(),
+                                    photoURL.getText().toString());
+
+                            controller.updateRow(bundle.getInt("contactId"), contact);
+                            updateContactInfo(bundle.getInt("contactId"));
+                            dialogInterface.dismiss();
+                        }
+                    }
+                });
+
+                Button negativeButton = alertDialog.getButton(AlertDialog.BUTTON_NEGATIVE);
+                negativeButton.setOnClickListener(new View.OnClickListener()
+                {
+                    @Override
+                    public void onClick(View v)
+                    {
+                        dialogInterface.dismiss();
+                    }
+                });
+            }
+        });
+        alertDialog.show();
     }
+
+
+
+
+
 
 }
