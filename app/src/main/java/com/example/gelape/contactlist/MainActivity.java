@@ -20,11 +20,13 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.example.gelape.contactlist.adapter.ContactsAdapter;
 import com.example.gelape.contactlist.database.DbController;
 import com.example.gelape.contactlist.model.ContactResponse;
 import com.example.gelape.contactlist.rest.ApiClient;
 import com.example.gelape.contactlist.rest.ApiInterface;
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,6 +34,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnItemClick;
@@ -120,6 +123,7 @@ public class MainActivity extends AppCompatActivity
 
     public void checkFirstAppRun()
     {
+        //if its the first time you run the app it gets the information from webservice
         SharedPreferences preferences = getSharedPreferences("MyPrefrence", MODE_PRIVATE);
         if (!preferences.getBoolean("isFirstTime", false))
         {
@@ -157,6 +161,7 @@ public class MainActivity extends AppCompatActivity
                 }
             });
         }
+        //otherwise it gets from the database
         else
         {
             contactsResponseFinal = controller.fetchAllContacts();
@@ -165,6 +170,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    //create the dialog to add a new contact
     public void createDialogAdd()
     {
         LinearLayout layout = new LinearLayout(getApplicationContext());
@@ -230,7 +236,7 @@ public class MainActivity extends AppCompatActivity
                 .setNegativeButton("Cancelar", null);
 
         final AlertDialog alertDialog = alert.create();
-
+        //check if the user left no fields blank
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener()
         {
             @Override
@@ -284,6 +290,7 @@ public class MainActivity extends AppCompatActivity
         alertDialog.show();
     }
 
+    //format the date
     private void updateLabelFrom()
     {
         String myFormat = "dd/MM/yyyy";

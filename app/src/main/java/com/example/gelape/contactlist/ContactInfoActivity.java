@@ -26,7 +26,6 @@ import com.squareup.picasso.Picasso;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
@@ -71,6 +70,7 @@ public class ContactInfoActivity extends AppCompatActivity
 
     }
 
+    //update the contact after you entered new information
     public void updateContactInfo(int id)
     {
         ContactResponse contactsNew = controller.fetchSpecificContact(id);
@@ -88,6 +88,7 @@ public class ContactInfoActivity extends AppCompatActivity
         createDialogUpdate(view);
     }
 
+    //format the date
     private void updateLabelFrom()
     {
         String myFormat = "dd/MM/yyyy";
@@ -97,6 +98,7 @@ public class ContactInfoActivity extends AppCompatActivity
         bornEdt.setInputType(InputType.TYPE_NULL);
     }
 
+    //create the dialog to update contact
     public void createDialogUpdate(View view)
     {
         bundle = getIntent().getExtras();
@@ -148,7 +150,6 @@ public class ContactInfoActivity extends AppCompatActivity
         layout.addView(photoURL);
 
         TextView title = new TextView(this);
-        // You Can Customise your Title here
         title.setText("Editar Contato");
         title.setBackgroundColor(Color.parseColor("#64b5f6"));
         title.setPadding(10, 10, 10, 10);
@@ -160,10 +161,10 @@ public class ContactInfoActivity extends AppCompatActivity
         alert.setCustomTitle(title)
                 .setView(layout).setPositiveButton("Salvar", null)
                 .setNegativeButton("Cancelar", null);
-        //alert.show();
 
         final AlertDialog alertDialog = alert.create();
 
+        //check if the user left no fields blank
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener()
         {
             @Override
@@ -212,10 +213,5 @@ public class ContactInfoActivity extends AppCompatActivity
         });
         alertDialog.show();
     }
-
-
-
-
-
 
 }

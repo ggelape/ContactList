@@ -6,8 +6,11 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+
 import com.example.gelape.contactlist.model.ContactResponse;
+
 import java.util.ArrayList;
+
 import static com.example.gelape.contactlist.database.SqliteDB.ID;
 import static com.example.gelape.contactlist.database.SqliteDB.KEY_BIO;
 import static com.example.gelape.contactlist.database.SqliteDB.KEY_BORN;
@@ -52,6 +55,7 @@ public class DbController
             return "Success";
     }
 
+    //open database method
     public synchronized DbController open() throws SQLException
     {
         bank = new SqliteDB(context);
@@ -59,28 +63,27 @@ public class DbController
         return this;
     }
 
-    public synchronized void close()
-    {
-        bank.close();
-    }
-
+    //add user method
     public long createRow(ContactResponse contact)
     {
         ContentValues values = createContentValue(contact);
         return db.insert(TABLE_CONTACTS, null, values);
     }
 
+    //update user method
     public boolean updateRow(long rowIndex, ContactResponse contact)
     {
         ContentValues values = createContentValue(contact);
         return db.update(TABLE_CONTACTS, values, ID + "=" + rowIndex, null) > 0;
     }
 
+    //delete user method
     public boolean deleteRow(long rowIndex)
     {
         return db.delete(TABLE_CONTACTS, ID + "=" + rowIndex, null) > 0;
     }
 
+    //to edit, you need to get a specific user entry
     public Cursor fetchEntry(long rowIndex) throws SQLException
     {
         Cursor mCursor = db.query(true, TABLE_CONTACTS, TABLE_COLUMNS, ID + "=" + rowIndex, null, null, null, null, null);
@@ -91,6 +94,7 @@ public class DbController
         return mCursor;
     }
 
+    //use contact response to edit the user
     public ContactResponse fetchSpecificContact(long rowIndex)
     {
         Cursor resultSet = fetchEntry(rowIndex);
@@ -105,6 +109,7 @@ public class DbController
         return contactResponse;
     }
 
+    //retrieve entire list
     public Cursor fetchAllEntries()
     {
         return db.query(TABLE_CONTACTS, TABLE_COLUMNS, null, null, null, null, null);

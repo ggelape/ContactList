@@ -12,7 +12,6 @@ import com.example.gelape.contactlist.model.ContactResponse;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
